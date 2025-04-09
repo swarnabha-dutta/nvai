@@ -1,8 +1,6 @@
 import { Webhook } from "svix";
 import connectToDB from "@/config/db";
 import User from "@/models/User";
-import { headers } from "next/headers";
-import { NextRequest } from "next/server";
 
 export async function POST(req) {
     const wh = await Webhook(process.env.SIGNING_SECRET);
@@ -24,23 +22,4 @@ export async function POST(req) {
         image: data.image_url
     }
     await connectToDB();
-
-
-    switch (type) {
-        case 'user.created':
-            await User.create(userData);
-            break;
-
-        case 'user.updated':
-            await User.findByIdAndUpdate(data.id, userData, { new: true });
-            break;
-
-        case 'user.deleted':
-            await User.findByIdAndDelete(data.id);
-            break;
-
-        default:
-            break;
-    }
-    return NextRequest.json({ message: "Event Received" });
 }

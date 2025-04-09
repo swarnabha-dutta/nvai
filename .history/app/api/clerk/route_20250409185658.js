@@ -1,8 +1,6 @@
 import { Webhook } from "svix";
 import connectToDB from "@/config/db";
 import User from "@/models/User";
-import { headers } from "next/headers";
-import { NextRequest } from "next/server";
 
 export async function POST(req) {
     const wh = await Webhook(process.env.SIGNING_SECRET);
@@ -42,5 +40,5 @@ export async function POST(req) {
         default:
             break;
     }
-    return NextRequest.json({ message: "Event Received" });
+
 }
